@@ -64,9 +64,13 @@ header {
 .component.active {
   background: #656266;
 }
+.hovered circle {
+  stroke-dasharray: 1;
+}
 
 .tag:focus,
 .component:focus {
+  background: #656266;
   box-shadow: 0px 0px 0px 3px #005bd3, 0px 0px 0px 1px #000;
 }
 
@@ -406,10 +410,17 @@ button {
   padding: 0.75rem 0;
   border-radius: 10px;
 }
+
 .labels p
 {
+  cursor: pointer;
   padding:8px;
+}
+.labels p:focus
 
+{
+  outline: 2px solid #005BD3;
+  border-radius :10px;
 }
 
 .labels p:hover {
@@ -465,6 +476,11 @@ border-bottom: 1px solid #E1E1E1;
 {
   padding:5px;
   width: 100%;
+  cursor: pointer;
+}
+div[role="button"]:focus
+{
+  outline: 2px solid #005BD3;
 }
 #firstlist
 {
@@ -475,11 +491,20 @@ border-bottom: 1px solid #E1E1E1;
 {
   color:#616161;
   font-weight: 400;
-}.hovereffects
+}
+.hovereffects
 {
   border-radius: 10px;
   padding:10px;
+  cursor: pointer;
+
 }
+.hovereffects:focus
+{
+  outline: 2px solid #005BD3;
+
+}
+
 .hovereffects:hover
 {
   background-color:#F3F3F3 ;
@@ -495,11 +520,60 @@ border-bottom: 1px solid #E1E1E1;
   }
   .search-bar
   {
-    width: 15.5rem;
+    width: 17.5rem;
   }
-  .plan-box
+ 
+  .setup-guide,.plan-box
   {
-    
+    width: unset;
+    max-width: unset;
+    border-radius: unset;
   }
+  .plan-box{
+    flex-direction: column;
+    gap: 1.2rem;
+    padding: 1rem ;
+  }
+  #storeMenu
+  {
+    width: 65vw;
+  }
+  .frame
+  {
+    align-content: unset;
+  }
+  .step img
+  {
+    display: none;
+  }
+  .step article
+  {
+    width: unset;
+  }
+  header
+  {
+    justify-content: space-around;
+  }
+  .dropdownMenu
+  {
+    right:4vw;
+    width: 85vw;
+  }
+  .text-wrapper{
+    order: 1;
+    width: 90%;
+  }
+  .select-plan
+  {
+    justify-content: space-between;
+    order: 2;
+  }
+  .select-plan svg
+  {
+    margin-bottom: 7rem;
+    right: 1.5rem;
+    position: absolute;
 }
+  }
+
 

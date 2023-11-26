@@ -7,19 +7,26 @@ const down =
 const up =
   "M15.0303 12.2803C14.7374 12.5732 14.2626 12.5732 13.9697 12.2803L10.5 8.81066L7.03033 12.2803C6.73744 12.5732 6.26256 12.5732 5.96967 12.2803C5.67678 11.9874 5.67678 11.5126 5.96967 11.2197L9.96967 7.21967C10.2626 6.92678 10.7374 6.92678 11.0303 7.21967L15.0303 11.2197C15.3232 11.5126 15.3232 11.9874 15.0303 12.2803Z";
 
-showButton.addEventListener("click", () => {
-  const path = showButton.querySelector("path");
-  if (path.getAttribute("d") === up) {
-    path.setAttribute("d", down);
-  } else {
-    path.setAttribute("d", up);
+  function showDropdown () {
+    const path = showButton.querySelector("path");
+    if (path.getAttribute("d") === up) {
+      path.setAttribute("d", down);
+    } else {
+      path.setAttribute("d", up);
+    }
+    if (steps.style.display === "none") {
+      steps.style.display = "flex";
+    } else {
+      steps.style.display = "none";
+    }
   }
-  if (steps.style.display === "none") {
-    steps.style.display = "flex";
-  } else {
-    steps.style.display = "none";
-  }
-});
+  
+  showButton.addEventListener("click", showDropdown);
+  showButton.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      showDropdown()
+    }
+  })
 
 const allSteps = document.querySelectorAll(".step");
 const counter = document.getElementById("number");
@@ -59,6 +66,18 @@ const paths = [
         fill="#fff"
       ></path>
     </svg>`,
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+      <circle
+        cx="16"
+        cy="16"
+        r="12"
+        stroke="#8A8A8A"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-dasharray="1"
+      />
+    </svg>`
 ];
 
 let currentPath = 0;
@@ -68,86 +87,109 @@ allSteps.forEach((step) => {
   const titles = step.querySelectorAll(".title");
   const titleIcons = step.querySelectorAll("#checkBox");
 
-  titleIcons.forEach((icon) => {
-    icon.innerHTML = paths[0];
-    icon.addEventListener("click", () => {
-      const aString = new XMLSerializer().serializeToString(
-        new DOMParser().parseFromString(paths[0], "image/svg+xml")
-          .documentElement
-      );
-      const cString = new XMLSerializer().serializeToString(
-        new DOMParser().parseFromString(paths[2], "image/svg+xml")
-          .documentElement
-      );
-      const iconString = new XMLSerializer().serializeToString(
-        new DOMParser().parseFromString(icon.innerHTML, "image/svg+xml")
-          .documentElement
-      );
+  function handleIconClick (icon) {
+    const aString = new XMLSerializer().serializeToString(
+      new DOMParser().parseFromString(paths[0], "image/svg+xml")
+        .documentElement
+    );
+    const cString = new XMLSerializer().serializeToString(
+      new DOMParser().parseFromString(paths[2], "image/svg+xml")
+        .documentElement
+    );
+    const iconString = new XMLSerializer().serializeToString(
+      new DOMParser().parseFromString(icon.innerHTML, "image/svg+xml")
+        .documentElement
+    );
 
-      if (iconString === aString) {
-        count++;
-        counter.innerHTML = count;
-        progress.value = count * 20;
+    if (iconString === aString) {
+      count++;
+      counter.innerHTML = count;
+      progress.value = count * 20;
 
-        if (progress.value >= 100) {
-          progress.classList.add("completed");
-        }
-
-        icon.classList.add("fade");
-        icon.innerHTML = paths[1];
-        setTimeout(() => {
-          icon.innerHTML = paths[2];
-          currentPath = 1;
-          icon.classList.remove("fade");
-        }, 150);
-
-        allSteps.forEach((otherStep) => {
-          if (otherStep !== step) {
-            otherStep.style.background = "none";
-            otherStep.querySelector(".desc").style.display = "none";
-          }
-        });
-        step.style.background = "#F3F3F3";
-        desc.style.display = "flex";
-      } else if (iconString === cString) {
-        count--;
-        counter.innerHTML = count;
-        progress.value = count * 20;
-
-        if (progress.value < 100) {
-          progress.classList.remove("completed");
-        }
-
-        icon.classList.add("fade");
-        icon.innerHTML = paths[1];
-        setTimeout(() => {
-          icon.innerHTML = paths[0];
-          currentPath = 0;
-          icon.classList.remove("fade");
-        }, 150);
+      if (progress.value >= 100) {
+        progress.classList.add("completed");
       }
-    });
-  });
 
-  titles.forEach((title) => {
-    title.addEventListener("click", () => {
-      console.log(title, desc, step);
+      icon.classList.add("fade");
+      icon.innerHTML = paths[1];
+      setTimeout(() => {
+        icon.innerHTML = paths[2];
+        currentPath = 1;
+        icon.classList.remove("fade");
+      }, 150);
+
       allSteps.forEach((otherStep) => {
         if (otherStep !== step) {
           otherStep.style.background = "none";
           otherStep.querySelector(".desc").style.display = "none";
         }
       });
+      step.style.background = "#F3F3F3";
+      desc.style.display = "flex";
+    } else if (iconString === cString) {
+      count--;
+      counter.innerHTML = count;
+      progress.value = count * 20;
 
-      if (desc.style.display === "flex") {
-        step.style.background = "none";
-        desc.style.display = "none";
-      } else {
-        step.style.background = "#F3F3F3";
-        desc.style.display = "flex";
+      if (progress.value < 100) {
+        progress.classList.remove("completed");
+      }
+
+      icon.classList.add("fade");
+      icon.innerHTML = paths[1];
+      setTimeout(() => {
+        icon.innerHTML = paths[0];
+        currentPath = 0;
+        icon.classList.remove("fade");
+      }, 150);
+    }
+  }
+
+  titleIcons.forEach((icon) => {
+    icon.innerHTML = paths[0];
+    icon.addEventListener("click", () => handleIconClick(icon));
+    icon.addEventListener("keydown", function(event) {
+      if (event.key === 'Enter') {
+        handleIconClick(icon);
+      }
+    });
+    icon.addEventListener("mouseenter", () => {
+      icon.classList.add("hovered");
+    });
+  
+    icon.addEventListener("mouseleave", () => {
+      icon.classList.remove("hovered");
+    });
+  });
+
+
+
+  function handleTitleClick () {
+    allSteps.forEach((otherStep) => {
+      if (otherStep !== step) {
+        otherStep.style.background = "none";
+        otherStep.querySelector(".desc").style.display = "none";
+      }
+    });
+
+    if (desc.style.display === "flex") {
+      step.style.background = "none";
+      desc.style.display = "none";
+    } else {
+      step.style.background = "#F3F3F3";
+      desc.style.display = "flex";
+    }
+  }
+
+  titles.forEach((title) => {
+    title.addEventListener("click", handleTitleClick);
+    title.addEventListener("keydown", function(event) {
+      if (event.key === 'Enter') {
+        handleTitleClick.call(this, event);
       }
     });
   });
+
 });
 
 progress.addEventListener("change", () => {
@@ -175,28 +217,41 @@ document.querySelectorAll(".tag, .component").forEach((element) => {
 const tagMenu = document.getElementById('tagMenu');
 const storeMenu = document.getElementById('storeMenu');
 
-document.querySelector('.tag').addEventListener('click', () => {
-    if (tagMenu.classList.contains("show")) {
-        tagMenu.classList.remove("show");
-    } else {
-        tagMenu.classList.add("show");
-        if(storeMenu.classList.contains("show")) {
-            storeMenu.classList.remove("show");
-        }
-    }
-})
 
-document.querySelector('.component').addEventListener('click', () => {
-    if (storeMenu.classList.contains("show")) {
+function showTagMenu() {
+  if (tagMenu.classList.contains("show")) {
+    tagMenu.classList.remove("show");
+} else {
+    tagMenu.classList.add("show");
+    if(storeMenu.classList.contains("show")) {
         storeMenu.classList.remove("show");
-    } else {
-        storeMenu.classList.add("show");
-        if(tagMenu.classList.contains("show")) {
-            tagMenu.classList.remove("show");
-        }
     }
+}
+}
+
+function showStoreMenu () {
+  if (storeMenu.classList.contains("show")) {
+    storeMenu.classList.remove("show");
+} else {
+    storeMenu.classList.add("show");
+    if(tagMenu.classList.contains("show")) {
+        tagMenu.classList.remove("show");
+    }
+}
+}
+document.querySelector('.tag').addEventListener('click', showTagMenu)
+document.querySelector('.tag').addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    showTagMenu()
+  }
 })
 
+document.querySelector('.component').addEventListener('click', showStoreMenu)
+document.querySelector('.component').addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    showStoreMenu()
+  }
+})
 
 document.addEventListener('click', (event) => {
   if (!event.target.closest('.tag') && !event.target.closest('.component')) {
@@ -204,3 +259,30 @@ document.addEventListener('click', (event) => {
       storeMenu.classList.remove('show');
   }
 });
+
+function checkWidth () {
+  const width = window.innerWidth
+  if (width < 768) {
+    document.querySelector('.plan-box').classList.remove('items-center')
+  }
+}
+
+window.addEventListener('load', checkWidth)
+window.addEventListener('resize', checkWidth)
+
+function removeDisplayBox () {
+  document.querySelector('.plan-box').style.display = "none"
+}
+
+document.querySelector('#removeBox').addEventListener('click', removeDisplayBox)
+document.querySelector('#removeBox').addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    removeDisplayBox()
+  }
+})
+
+
+
+
+
+
