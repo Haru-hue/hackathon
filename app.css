@@ -33,10 +33,6 @@ header {
   padding: 0.25rem;
 }
 
-.store-name {
-  padding: 0.6rem 0.75rem;
-}
-
 .div-wrapper {
   background: #36fba1;
   padding: 0.6rem;
@@ -410,3 +406,19 @@ button {
   flex-direction: column;
   gap: 0.25rem;
 }
+
+.store-name {
+  display: flex;
+  padding: 0.6rem 0.75rem;
+}
+
+/* Responsiveness */
+@media only screen and (max-width: 768px) {
+  .store-name {
+    display: none;
+  }
+  .tag svg {
+    fill: none;
+  }
+}
+

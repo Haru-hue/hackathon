@@ -5,10 +5,10 @@
   </head>
   <body class="flex">
     <header class="items-center">
-      <img
-        class="shopify-com-svg"
-        src="https://crushingit.tech/hackathon-assets/shopify-icon-desktop.svg"
-      />
+      <picture>
+        <source media="(max-width: 768px)" srcset="https://crushingit.tech/hackathon-assets/shopify-icon.svg">
+        <img src="https://crushingit.tech/hackathon-assets/shopify-icon-desktop.svg" alt="Responsive image">
+      </picture>
       <div class="search-bar items-center">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13 14">
           <path
@@ -86,7 +86,7 @@
         </div>
       </div>
       <div class="dropdownMenu" id="storeMenu">
-        <div class="items-center" id="">
+        <div class="items-center">
           <div class="div-wrapper">DC</div>
           <p>Davii Collections</p>
         </div>
