@@ -200,7 +200,7 @@ document.querySelector('.component').addEventListener('click', () => {
 
 document.addEventListener('click', (event) => {
   if (!event.target.closest('.tag') && !event.target.closest('.component')) {
-      tagMenu.style.display = "none";
-      storeMenu.style.display = "none";
+      tagMenu.classList.remove('show');
+      storeMenu.classList.remove('show');
   }
 });
