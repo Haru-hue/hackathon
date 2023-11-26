@@ -379,6 +379,11 @@ button {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  visibility: hidden;
+}
+
+.dropdownMenu.show {
+  visibility: visible;
 }
 
 .dropdownMenu svg {

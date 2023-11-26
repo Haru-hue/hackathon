@@ -172,11 +172,35 @@ document.querySelectorAll(".tag, .component").forEach((element) => {
   });
 });
 
+const tagMenu = document.getElementById('tagMenu');
+const storeMenu = document.getElementById('storeMenu');
+
 document.querySelector('.tag').addEventListener('click', () => {
-    const menu = document.getElementById('tagMenu');
-    if (menu.style.display === "none") {
-        menu.style.display = "flex";
+    if (tagMenu.classList.contains("show")) {
+        tagMenu.classList.remove("show");
     } else {
-        menu.style.display = "none";
+        tagMenu.classList.add("show");
+        if(storeMenu.classList.contains("show")) {
+            storeMenu.classList.remove("show");
+        }
     }
 })
+
+document.querySelector('.component').addEventListener('click', () => {
+    if (storeMenu.classList.contains("show")) {
+        storeMenu.classList.remove("show");
+    } else {
+        storeMenu.classList.add("show");
+        if(tagMenu.classList.contains("show")) {
+            tagMenu.classList.remove("show");
+        }
+    }
+})
+
+
+document.addEventListener('click', (event) => {
+  if (!event.target.closest('.tag') && !event.target.closest('.component')) {
+      tagMenu.style.display = "none";
+      storeMenu.style.display = "none";
+  }
+});
